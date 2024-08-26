@@ -1,12 +1,13 @@
+import { Suspense } from "react";
+import GetMercadorias from "../estoque/getMercadorias";
+import MercTable from "./table";
+import { Skeleton } from "@nextui-org/react";
+import TableSkeleton from "./tableSkeleton";
 
-import UsersTest from "../estoque/getUsers";
 
 export default function TestPage(){
 
     return(
-            <div>
-                <UsersTest />
-                
-            </div>
+            <GetMercadorias />
     )
 }

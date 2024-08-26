@@ -4,16 +4,13 @@ const nextConfig = {
     experimental: {
         serverComponentsExternalPackages: ['knex'],
     },
+    webpack(config) {
+        config.resolve.fallback = {
+            ...config.resolve.fallback,
+            fs: false,
+        };
+        return config;
+    }
 };
-// module.exports = {
-//     webpack: (
-//       config,
-//       { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
-//     ) => {
-
-//       // Important: return the modified config
-//       return config
-//     },
-//   }
 
 export default nextConfig;

@@ -24,13 +24,38 @@ export const rows = [
         valorVenda: 999,
     },
 ]
+
+export const columns = [
+    
+    {
+        key: "id",
+        label: "ID",
+    },
+    {
+        key: 'description',
+        label: 'Descrição',
+    },
+    {
+        key: 'fabrica',
+        label: 'Fábrica',
+    },
+    {
+        key: 'estoque',
+        label: 'Estoque',
+    },
+    {
+        key: 'valorVenda',
+        label: 'Valor Venda'
+    }
+]
+
 export const categories = [
     {
-        key:"moveis",
+        key:"0",
         label:"Moveis"
     },
     {
-        key:"eletro",
+        key:"1",
         label:"Eletro"
     }
 ]

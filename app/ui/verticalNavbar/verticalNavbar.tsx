@@ -9,7 +9,7 @@ import { SidebarContext } from "./sidebarOpenContext";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 
 export default function VerticalNavbar(){
-    let isSidebarOpen = useContext(SidebarContext);
+    // let isSidebarOpen = useContext(SidebarContext);
 
     const[sidebarOpen, setSidebarOpen] = useState(false);
 

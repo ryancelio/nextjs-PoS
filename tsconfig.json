@@ -7,11 +7,14 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
+    "target":"ESNext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "allowImportingTsExtensions": true,
     "incremental": true,
+
     "plugins": [
       {
         "name": "next"
@@ -19,8 +22,13 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/pages/_app.js", "lib/db.js", "app/ui/verticalNavbar/verticalNav-links.js", "app/ui/verticalNavbar/verticalNav-links.jsx"],
+  "ts-node":{
+    "compilerOptions":{
+      "module": "CommonJS"
+    },
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/pages/_app.js", "lib/db.js", "app/ui/verticalNavbar/verticalNav-links.js", "app/ui/verticalNavbar/verticalNav-links.jsx", "envConfig.js", "knexfile.js", "knexfile.ts", "knexfile.ts", "seeds/initial_users.js"],
   "exclude": ["node_modules"]
 }

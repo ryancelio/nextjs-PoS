@@ -3,7 +3,7 @@
 
 import React from "react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/table";
-import {rows, categories} from "./data";
+import {rows, categories} from "./placeholderData";
 import clsx from "clsx";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Autocomplete, AutocompleteItem, Divider, Select, SelectItem, Textarea } from "@nextui-org/react";

@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en" className="text-foreground bg-background">
       <body className={`${inter.className} antialiased min-h-fit`}>
         <Providers>
-          <div className="flex">
+          <div className="flex transition-colors">
             <VerticalNavbar />
             <div className="w-full">
             {children}
