@@ -1,5 +1,5 @@
-export default interface Mercadoria {
-    key? : string;
+export interface Mercadoria {
+    key : string;
     cod?: number;
     descricao?: string;
     fabrica?: string;
@@ -15,4 +15,13 @@ export default interface Mercadoria {
     dataEntrada?: string;
     observacoes?: string;
     naoVender?: boolean;
+}
+export interface Categoria {
+    key: string;
+    name?: string;
+}
+export interface Fabrica {
+    key: string;
+    label: string;
+    nomeFantasia: string;
 }

@@ -1,17 +1,16 @@
 'use client';
 
-import { Suspense, useState } from "react";
-import MercadoriasTest from "../estoque/getMercadorias";
-import UsersTest from "../estoque/getUsers";
-import { Autocomplete, AutocompleteItem, Button, getKeyValue, Skeleton, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Textarea } from "@nextui-org/react";
-import Mercadoria from "../estoque/mercadoria";
+import { useCallback, useMemo, useState } from "react";
+import { Autocomplete, AutocompleteItem, Button, Input, SortDescriptor, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Textarea } from "@nextui-org/react";
 import { placeholderMerc } from "./placeholderMercadoria";
 import React from "react";
 import MercInfoSidebar from "./mercSidebar";
 import clsx from "clsx";
-import { ArchiveBoxIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import Categoria from "../estoque/categoria";
+import { ArchiveBoxIcon, FunnelIcon, MagnifyingGlassIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Mercadoria, Categoria, Fabrica } from "../lib/types";
 import Link from "next/link";
+import {useAsyncList} from "@react-stately/data";
+import { db } from "../lib/db";
 
 const columns = [
     {
@@ -36,16 +35,29 @@ const columns = [
     }
 ]
 
-export default function MercTable({mercadorias, categorias}: 
+export default function MercTable({mercadorias, categorias, fabricas}: 
     {
         mercadorias: Mercadoria[];
         categorias: Categoria[];
+        fabricas: Fabrica[];
     }){
 
     
     const[mercToDisplay, setMercToDisplay] = useState(placeholderMerc);
     const[changedMerc,setChangedMerc] = useState(mercToDisplay);
+    const[isLoading,setIsLoading] = useState(true);
     const[isOpen,setIsOpen] = useState(false);
+    const[filterValue,setFilterValue] = useState("");
+    const[sortDescriptor,setSortDescriptor] = useState<SortDescriptor>({
+        column: "cod",
+        direction: "ascending",
+    })
+    const[isAdvancedFilterOpen,setAdvancedFilterOpen] = useState(false);
+    const[fabricaFilter,setFabricaFilter] = useState("");
+    // const[statusFilter,setStatusFilter] = useState<Selection>("all");
+
+    const hasSearchFilter = Boolean(filterValue);
+    const hasFabricaFilter = Boolean(fabricaFilter)
 
     function handleSelectionChange(key: any) {
         // console.log(key)
@@ -78,7 +90,7 @@ export default function MercTable({mercadorias, categorias}:
             case 'fabrica':
                 return(
                     <div>
-                        <p>{cellValue}</p>
+                        <p className="capitalize">{cellValue}</p>
                     </div>
                 );
             case 'estoqueTotal':
@@ -100,6 +112,115 @@ export default function MercTable({mercadorias, categorias}:
     function handleRowAction(key: string | number | bigint): void {
         setIsOpen(true)
     }
+
+    // Recebe a lista de mercadorias completa do banco de dados, e filtra
+    const filteredMercadorias = useMemo(() =>{
+        let filteredMercadorias = [...mercadorias];
+
+        if(hasSearchFilter){
+            filteredMercadorias = filteredMercadorias.filter((mercadoria) =>
+            mercadoria.descricao?.toLowerCase().includes(filterValue.toLocaleLowerCase()),
+        );
+        }
+        if(hasFabricaFilter){
+            filteredMercadorias = filteredMercadorias.filter((mercadoria) =>
+                // console.log(`Mercadoria: ${mercadoria.fabrica}`)
+                // console.log(`Fabrica: ${fabricaFilter}`)
+                mercadoria.fabrica == fabricaFilter
+            )
+        }
+        return filteredMercadorias;
+    },[mercadorias,filterValue,hasSearchFilter,fabricaFilter,hasFabricaFilter]);
+    
+    // Recebe a lista filtrada de filteredMercadorias e permite ordenar (sort) elas de acordo com a coluna
+    const list = useMemo(() =>{
+        return [...filteredMercadorias].sort((a: Mercadoria,b: Mercadoria) =>{
+            const first = a[sortDescriptor.column as keyof Mercadoria] as Number;
+            const second = b[sortDescriptor.column as keyof Mercadoria] as Number;
+            const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+            setIsLoading(false)
+            return sortDescriptor.direction === "descending" ? -cmp : cmp
+        });
+    },[sortDescriptor,filteredMercadorias])
+
+            // const onClear = useCallback(() =>{
+        //     setFilterValue("");
+        // },[])
+        const onSearchChange = useCallback((value?:string) =>{
+            if(value){
+                setFilterValue(value);
+            }else{
+                setFilterValue("");
+            }
+        },[])
+
+
+    //|---------------------------------|
+    //|         Top Content             |
+    //|---------------------------------|
+    const TopContent = useMemo(() =>{
+        const onSelectionChange = (key: any) =>{
+            const filteredFabrica = fabricas.find((fabrica) => fabrica.key == key)
+            console.log(filteredFabrica)
+            if(filteredFabrica){
+                setFabricaFilter(filteredFabrica.label)
+            }else{
+                setFabricaFilter("");
+            }
+        }
+        return(
+            <div>
+                <div className="flex items-center">
+                    {/* Left */}
+                    <div className="mr-auto flex items-center gap-5">
+                        {/* <div className="flex">
+                            <ArchiveBoxIcon className="w-6" />
+                            <p className="pl-3 text-lg">Estoque</p>
+                        </div> */}
+                        <div className="">
+                            <Input 
+                            isClearable
+                            className="w-full h-fit sm:max-w-[44%] md:max-w-full"
+                            placeholder="Pesquisar Mercadoria"
+                            startContent={<MagnifyingGlassIcon className="w-6"/>}
+                            value={filterValue}
+                            onClear={() => setFilterValue("")}
+                            onValueChange={onSearchChange}
+                            />
+                        </div>
+                        <FunnelIcon title="Filtros Avançados" className="w-6 cursor-pointer hover:opacity-50" onClick={() =>setAdvancedFilterOpen(!isAdvancedFilterOpen)}/>
+                    </div>
+                    {/* Middle */}
+                    <div className="mr-auto ml-auto text-2xl font-semibold">
+                        Célio Móveis
+                    </div>
+                    {/* Right */}
+                    <div className="ml-auto">
+                        <Button as={Link} href="/test/adicionarMercadoria" color="success" ><PlusIcon className="w-5" /> Adicionar Merdacoria</Button>
+                    </div>
+                </div>
+            {/* Advanced Filtering */}
+                <div className={clsx("flex overflow-hidden transition-height ease-out",
+                    {
+                        "h-0" : !isAdvancedFilterOpen
+                    },
+                    {
+                        "h-16 mt-4 border-b-1 border-gray-700" :isAdvancedFilterOpen
+                    }
+                )}>
+                <Autocomplete label="Fabrica" className="w-52 h-fit" size="sm" labelPlacement="inside" onSelectionChange={onSelectionChange}>
+                            {fabricas.map((fabrica) =>(
+                                <AutocompleteItem key={fabrica.key} value={fabrica.label}>
+                                    {fabrica.nomeFantasia}
+                                </AutocompleteItem>
+                            ))}
+                        </Autocomplete>
+                </div>
+            </div>
+        )
+    },[filterValue,onSearchChange,setFilterValue,fabricas,isAdvancedFilterOpen])
+
     return(
             <>
             <ProductInfoOverlay />
@@ -108,27 +229,50 @@ export default function MercTable({mercadorias, categorias}:
                 {/* Tabela */}
 
                 <div className="col-span-8">
-                     <Table aria-label="Table" isStriped color="primary" selectionMode="single" selectionBehavior="replace"  onSelectionChange={(key) => handleSelectionChange(key)}
-                             className="z-10 p-4"
-                             topContent={<TableTopContent />}
-                             onRowAction={(key) => handleRowAction(key)}
+                     <Table aria-label="Table"
+                            sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} 
+                            color="default" selectionMode="single"
+                            selectionBehavior="replace"  
+                            onSelectionChange={(key) => handleSelectionChange(key)}
+                            className="z-10 p-4"
+                            topContent={TopContent}
+                            onRowAction={(key) => handleRowAction(key)}
                          >
                          <TableHeader className="" columns={columns}>
-                             {(column) => <TableColumn key={column.key} className="light:bg-black light:text-white" align={column.key === "descricao" ? "start" : "center"} >{column.label}</TableColumn>}
+                             {(column) =>
+                                            <TableColumn    key={column.key} className="light:bg-black light:text-white" 
+                                                            allowsSorting={(column.key === "descricao") || (column.key === "cod") || (column.key === "fabrica") ? true : false }
+                                                            align={column.key === "descricao" ? "start" : "center"} >
+                                                            {column.label}
+                                            </TableColumn>}
                          </TableHeader>
-                         <TableBody items={mercadorias} emptyContent={"No rows to display."}>
-                             {(mercadoria) => (
-                                 <TableRow  key={mercadoria.key}
-                                 className={clsx("",
-                                    {
-                                        'dark:bg-danger-200 bg-danger-500' : mercadoria.estoqueTotal == 0
-                                    },
-                                    {
-                                        'bg-gray-800 text-gray-100 text-opacity-45' : mercadoria.naoVender
-                                    }
-                                 )}
-                                 >
-                                     {(columnKey) => <TableCell className="text-md">{renderCell(mercadoria, columnKey)}</TableCell>}
+                         <TableBody items={list}
+                                    emptyContent={
+                                                    <div>
+                                                        <h1>Nenhuma Mercadoria</h1>
+                                                        <p className="text-xs">Mude seus filtros e tente novamente</p>
+                                                    </div>
+                                                }
+                                    isLoading={isLoading}
+                                    loadingContent={
+                                                    <div  className="grid place-items-center h-full w-full">
+                                                        <Spinner label="loading..." />
+                                                    </div>
+                                                    } >
+                             {(mercadoria: any) => (
+                                 <TableRow  key={mercadoria.key}>
+                                     {(columnKey) => 
+                                        <TableCell className={clsx("text-md",
+                                            {
+                                                'dark:bg-danger-200 bg-danger-500 first:rounded-l-lg last:rounded-r-lg' : mercadoria.estoqueTotal == 0
+                                            },
+                                            {
+                                                'dark:bg-gray-800 bg-gray-500 text-neutral-700 first:rounded-l-lg last:rounded-r-lg data-[selected=true]:text-black' : mercadoria.naoVender
+                                            }
+
+                                        )}>
+                                            {renderCell(mercadoria, columnKey)}
+                                        </TableCell>}
                                  </TableRow>
                              )}
                          </TableBody>
@@ -138,30 +282,6 @@ export default function MercTable({mercadorias, categorias}:
             </section>
             </>
     )
-
-    function TableTopContent(){
-
-
-
-        return(
-            <div className="flex items-center">
-                {/* Left */}
-                <div className="flex mr-auto">
-                    <ArchiveBoxIcon className="w-6" />
-                    <p className="pl-3 text-lg">Estoque</p>
-                </div>
-                {/* Middle */}
-                <div className="mr-auto ml-auto text-2xl font-semibold">
-                    Célio Móveis
-                </div>
-                {/* Right */}
-                <div className="ml-auto">
-                    <Button as={Link} href="/test/adicionarMercadoria" color="success" ><PlusIcon className="w-5" /> Adicionar Merdacoria</Button>
-                </div>
-            </div>
-        )
-    }
-
 
     function ProductInfoOverlay(){
 

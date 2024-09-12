@@ -1,6 +1,7 @@
 import { useState } from "react";
-import Mercadoria from "../estoque/mercadoria";
+import { Mercadoria,Categoria,Fabrica } from "../lib/types";
 import { Divider, Textarea } from "@nextui-org/react";
+import clsx from "clsx";
 
 export default function MercInfoSidebar({mercadoria,}: {mercadoria: Mercadoria}){
 
@@ -30,7 +31,20 @@ export default function MercInfoSidebar({mercadoria,}: {mercadoria: Mercadoria})
                 isReadOnly variant="faded" size="lg"
                 value={mercadoria.valorVenda?.toFixed(2).toString()}
                 /> */}
-                    <div className="col-span-12 justify-center flex text-center text-2xl mt-1">
+                    <div className="col-span-12 pb-5 text-center">
+                        <h1 className={clsx("underline text-3xl text-danger-400",
+                            {
+                                "hidden" : !mercadoria.naoVender
+                            }
+                        )}>
+                            Nao Vender
+                        </h1>
+                    </div>
+                    <div className={clsx("col-span-12 justify-center flex text-center text-2xl mt-1",
+                        {
+                            "hidden" : mercadoria.naoVender
+                        }
+                    )}>
                     <h1 className="border-b-2 border-white hover:border-gray-400 w-fit">
                         <span className="pr-2 text-gray-400">Valor Venda:</span>
                         {`R$ ${mercadoria.valorVenda == 0 || undefined ? "----" : mercadoria.valorVenda?.toFixed(2)}`} 

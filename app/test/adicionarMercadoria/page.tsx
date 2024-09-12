@@ -1,5 +1,3 @@
-'use client;'
-
 import { Autocomplete, AutocompleteItem, Textarea } from "@nextui-org/react";
 import TopBar from "./TopBar";
 import { db } from "@/app/lib/db";
@@ -18,11 +16,12 @@ const placeholderCategoria: Categoria[] = [
 
 export default function Page(){
 
+
     return(
-        <section>
+        <section className="dark:bg-zinc-900 h-screen w-full">
             <TopBar />
-            <div>
-                <MercadoriaAddDiv />
+            <div className="">
+                <MercadoriaAddDiv/>
             </div>
         </section>
     )

@@ -29,6 +29,6 @@
       "module": "CommonJS"
     },
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/pages/_app.js", "lib/db.js", "app/ui/verticalNavbar/verticalNav-links.js", "app/ui/verticalNavbar/verticalNav-links.jsx", "envConfig.js", "knexfile.js", "knexfile.ts", "knexfile.ts", "seeds/initial_users.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/pages/_app.js", "lib/db.js", "app/ui/verticalNavbar/verticalNav-links.js", "app/ui/verticalNavbar/verticalNav-links.jsx", "envConfig.js", "knexfile.js", "knexfile.ts", "knexfile.ts", "seeds/initial_users.js", "app/test/adicionarMercadoria/ConfirmationContext.jsx"],
   "exclude": ["node_modules"]
 }

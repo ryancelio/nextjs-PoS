@@ -1,30 +1,23 @@
-import { Autocomplete, AutocompleteItem, Textarea } from "@nextui-org/react";
+'use server';
 import { db } from "@/app/lib/db";
-import { useEffect, useState } from "react";
-import Categoria from "@/app/estoque/categoria";
-import GetSelectCategory from "./ui/AdicionarMercMain";
 import AdicionarMercMain from "./ui/AdicionarMercMain";
+import { Categoria,Fabrica,Mercadoria } from "@/app/lib/types";
+import { placeholderMercadoria,placeholderCategoria,placeholderFabrica } from "@/app/lib/placeholders";
 
-
-const placeholderCategoria: Categoria[] = [
-    {
-        key: '0',
-        name: 'categoria'
-    }
-]
 
 
 export default async function MercadoriaAddDiv(){
 
     try{
         const categorias = await db('categorias').select("*");
+        const fabricas = await db('fabricas').select("*");
         
         return(
-            <AdicionarMercMain categorias={categorias} />
+                <AdicionarMercMain categorias={categorias} fabricas={fabricas}/>
         )
     }catch(error){
         return(
-            <AdicionarMercMain categorias={placeholderCategoria}/>
+            <AdicionarMercMain categorias={[placeholderCategoria]} fabricas={[placeholderFabrica]}/>
         )
     }
 }
