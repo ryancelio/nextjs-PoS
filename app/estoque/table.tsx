@@ -1,12 +1,14 @@
 
 'use client';
 
-import React from "react";
+import React, { useMemo, useState } from "react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/table";
 import {rows, categories} from "./placeholderData";
 import clsx from "clsx";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Autocomplete, AutocompleteItem, Divider, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Divider, Pagination, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Mercadoria } from "../lib/types";
+import { placeholderMercadoria } from "../lib/placeholders";
 
 const columns = [
     {
@@ -14,7 +16,7 @@ const columns = [
         label: "ID",
     },
     {
-        key: 'description',
+        key: 'descricao',
         label: 'Descrição',
     },
     {
@@ -22,7 +24,7 @@ const columns = [
         label: 'Fábrica',
     },
     {
-        key: 'estoque',
+        key: 'estoqueTotal',
         label: 'Estoque',
     },
     {
@@ -30,6 +32,21 @@ const columns = [
         label: 'Valor Venda'
     }
 ]
+const BigRows: Mercadoria[] = [placeholderMercadoria];
+for(let i = 6;i < 2000; i++){
+    let r = (Math.random() + 1).toString(36).substring(7);
+    BigRows.push(
+        {
+            descricao: r,
+            cod: i,
+            mercadoria_key: i.toString(),
+            estoque02: 0,
+            estoque03: 0,
+            estoque04: 0,
+            estoqueTotal: 0,
+        }
+    );
+}
 const placeholderObj = {
     key: '0',
     id: '1',
@@ -53,7 +70,17 @@ export default function ProdcutsTable(){
         setIsOpen(true);
         
     }
+    const [page, setPage] = useState(1);
+    const rowsPerPage = 10;
+    
+    const pages = Math.ceil(BigRows.length / rowsPerPage);
 
+    const items = useMemo( () =>{
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        return BigRows.slice(start,end);
+    },[page,BigRows])
 
     return(
         <>
@@ -62,13 +89,30 @@ export default function ProdcutsTable(){
             {/* Estoque Table */}
             <Table aria-label="Table" isStriped selectionMode="single" selectionBehavior="replace" onRowAction={(key) => handleRowAction(key)}
                     className="z-10 p-4"
+                    classNames={
+                        {
+                            base: 'max-h-screen overflow-scroll'
+                        }
+                    }
+                    bottomContent={
+                        <div>
+                            <Pagination 
+                            isCompact
+                            showControls
+                            showShadow
+                            onChange={(page) => setPage(page)}
+                            total={pages}
+                            page={page}
+                            />
+                        </div>
+                    }
                 >
                 <TableHeader columns={columns}>
                     {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
                 </TableHeader>
-                <TableBody items={rows} emptyContent={"No rows to display."}>
+                <TableBody items={items} emptyContent={"No rows to display."}>
                     {(item) => (
-                        <TableRow   key={item.key}
+                        <TableRow   key={item.mercadoria_key}
                         className=""
                         >
                             {(columnKey) => <TableCell className="">{getKeyValue(item, columnKey)}</TableCell>}

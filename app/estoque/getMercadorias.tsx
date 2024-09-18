@@ -19,8 +19,37 @@ export default async function GetMercadorias(){
         
         const mercadorias: Mercadoria[] = await db('mercadorias').select("*");
         const fabricas: Fabrica[] = await db('fabricas').select("*");
-        const categorias: Categoria[] = [placeholderCategoria];
+        const categorias: Categoria[] = await db('categorias').select("*");
 
+        //==================================================================//
+        //                        Big Dataset Test                          //
+        for(let i = 6;i < 10000; i++){
+            let name = (Math.random() + 1).toString(36).substring(7);
+            let estoqueTotal = Math.random() % 20
+            mercadorias.push(
+                {
+                    descricao: name,
+                    cod: i,
+                    mercadoria_key: i.toString(),
+                    fabricaKey: Math.floor(Math.random() * 5) + 1,
+                    estoque02: Math.floor(Math.random() * 8),
+                    estoque03: Math.floor(Math.random() * 8),
+                    estoque04: Math.floor(Math.random() * 8),
+                    estoqueTotal: 0,
+                    valorVenda: Math.floor(Math.random() * 1000)
+                }
+            );
+        }
+        //==================================================================//
+
+
+        //==================================================================//
+        //                          Logging                                 //
+        // console.log(mercadorias);
+        //==================================================================//
+
+
+        // Get Estoque Total from mercadorias, for mercadorias
         mercadorias.forEach((mercadoria) => {
             mercadoria.estoqueTotal = (mercadoria.estoque02 + mercadoria.estoque03 + mercadoria.estoque04);
         });

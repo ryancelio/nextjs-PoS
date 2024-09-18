@@ -98,21 +98,21 @@ export default function AdicionarMercMain({categorias,fabricas}:
                                 onSelectionChange={setFabricaValue}
                                 >
                     {fabricas.map((fabrica) =>(
-                        <AutocompleteItem key={fabrica.key} value={fabrica.label}>
+                        <AutocompleteItem key={fabrica.fabrica_key} value={fabrica.label}>
                             {fabrica.nomeFantasia}
                         </AutocompleteItem>
                     ))}
                 </Autocomplete>
                 <Autocomplete variant="faded" label="Categoria" className="px-2 col-span-2" size="md">
                     {categorias.map((categoria) =>(
-                        <AutocompleteItem key={categoria.key} value={categoria.name}>
+                        <AutocompleteItem key={categoria.categoria_key} value={categoria.name}>
                             {categoria.name}
                         </AutocompleteItem>
                     ))}
                 </Autocomplete>
                 <Autocomplete variant="faded" label="Grupo" className="col-span-2" size="md">
                     {categorias.map((categoria) =>(
-                        <AutocompleteItem key={categoria.key} value={categoria.name}>
+                        <AutocompleteItem key={categoria.categoria_key} value={categoria.name}>
                             {categoria.name}
                         </AutocompleteItem>
                     ))}

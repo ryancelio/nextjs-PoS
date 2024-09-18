@@ -1,9 +1,15 @@
-import { useState } from "react";
+
 import { Mercadoria,Categoria,Fabrica } from "../lib/types";
 import { Divider, Textarea } from "@nextui-org/react";
 import clsx from "clsx";
+import { db } from "../lib/db";
 
-export default function MercInfoSidebar({mercadoria,}: {mercadoria: Mercadoria}){
+export default function MercInfoSidebar({mercadoria,fabricaName}: {mercadoria: Mercadoria, fabricaName: String | undefined}){
+// export default async function MercInfoSidebar({mercadoriaKey,}:{mercadoriaKey: string}){
+
+        //@ts-ignore
+        // const mercadoria: Mercadoria = await db<Mercadoria>('mercadoria').select("*").where('mercadoria_key', mercadoriaKey);
+        // const fabrica: Fabrica = await db<Fabrica>('fabricas').select("*").where('fabrica_key', mercadoria.fabricaKey)
 
     return(
         <div className="col-span-4 h-screen">
@@ -15,7 +21,7 @@ export default function MercInfoSidebar({mercadoria,}: {mercadoria: Mercadoria})
                 <h1 className="text-center text-2xl">{mercadoria.descricao}</h1>
                 <div className="text-lg flex justify-center items-center space-x-5">
                     <h1 className="">
-                        {mercadoria.fabrica}
+                        {fabricaName}
                     </h1>
                         <Divider orientation="vertical"className="px-2" />
                     <h1>
