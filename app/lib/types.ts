@@ -1,7 +1,8 @@
 export interface Mercadoria {
-    key : string;
+    mercadoria_key : string;
     cod?: number;
     descricao?: string;
+    cor?: string;
     fabrica?: string;
     estoqueTotal: number;
     estoque02 : number;
@@ -15,13 +16,16 @@ export interface Mercadoria {
     dataEntrada?: string;
     observacoes?: string;
     naoVender?: boolean;
+    fabricaKey?: number;
+    categoriaKey?: number;
 }
 export interface Categoria {
-    key: string;
+    categoria_key: string;
+    label?: string;
     name?: string;
 }
 export interface Fabrica {
-    key: string;
+    fabrica_key: string;
     label: string;
     nomeFantasia: string;
 }

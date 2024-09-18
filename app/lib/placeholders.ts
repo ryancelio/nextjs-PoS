@@ -1,18 +1,20 @@
 import { Categoria, Fabrica, Mercadoria } from "./types";
 
 export const placeholderMercadoria: Mercadoria = {
-    key: "0",
+    mercadoria_key: "0",
+    fabricaKey: 0,
+    categoriaKey: 0,
     estoque02: 0,
     estoque03: 0,
     estoque04: 0,
     estoqueTotal: 0.
 }
 export const placeholderCategoria: Categoria = {
-    key: "0",
+    categoria_key: "0",
     name: "Categoria"
 }
 export const placeholderFabrica: Fabrica = {
-    key: "0",
+    fabrica_key: "0",
     label: "fabrica",
-    name: "Fabrica"
+    nomeFantasia: "Fabrica"
 }
