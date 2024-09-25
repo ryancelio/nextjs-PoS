@@ -34,9 +34,12 @@ export default async function GetMercadorias(){
                     fabricaKey: Math.floor(Math.random() * 5) + 1,
                     estoque02: Math.floor(Math.random() * 8),
                     estoque03: Math.floor(Math.random() * 8),
-                    estoque04: Math.floor(Math.random() * 8),
+                    estoque04: 0,
                     estoqueTotal: 0,
-                    valorVenda: Math.floor(Math.random() * 1000)
+                    valorVenda: Math.floor(Math.random() * 1000),
+                    naoVender: (Math.random() < 0.001 ? true : false),
+                    dataEntrada: (new Date().toString()),
+                    valorCompra: Math.floor(Math.random() * 1000),
                 }
             );
         }
@@ -52,6 +55,8 @@ export default async function GetMercadorias(){
         // Get Estoque Total from mercadorias, for mercadorias
         mercadorias.forEach((mercadoria) => {
             mercadoria.estoqueTotal = (mercadoria.estoque02 + mercadoria.estoque03 + mercadoria.estoque04);
+            //@ts-ignore
+            mercadoria.naoVender = mercadoria.naoVender == 0 ? false : true
         });
         return(
             <MercTable mercadorias={mercadorias} categorias={categorias} fabricas={fabricas}/>

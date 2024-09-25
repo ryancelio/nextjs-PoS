@@ -2,15 +2,20 @@
 import { Autocomplete, AutocompleteItem, Button, DateInput, DatePicker, Divider, Textarea } from "@nextui-org/react";
 import { addMercAction } from "../../addMercAction";
 import ConfirmationOver from "@/app/ui/components/ConfirmationOver";
-import { useContext, useState } from "react";
+import { useActionState, useContext, useState } from "react";
 import {getLocalTimeZone, parseAbsoluteToLocal, today, DateValue, now} from '@internationalized/date'
 import { useRouter } from "next/navigation";
 import { EstoqueInput } from "./EstoqueInput";
 import { CalendarIcon } from "@heroicons/react/24/outline";
 import { I18nProvider } from "@react-aria/i18n";
 import { Mercadoria,Categoria,Fabrica } from "@/app/lib/types";
+import { useFormState, useFormStatus } from "react-dom";
+import { addFormMerc } from "../addFormMerc";
 
 
+const initialState = {
+    message: "",
+}
 
 export default function AdicionarMercMain({categorias,fabricas}:
     {
@@ -30,6 +35,9 @@ export default function AdicionarMercMain({categorias,fabricas}:
     const [sumEstoques,setSumEstoques] = useState(0);
     const [dateUltimaEntrada, setDateUltimaEntrada] = useState<DateValue>(today(getLocalTimeZone()));
     const [fabricaValue,setFabricaValue] = useState<React.Key>("");
+    const [state, mercFormAction] = useActionState(addFormMerc, initialState);
+
+    const {pending} = useFormStatus();
 
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -59,7 +67,7 @@ export default function AdicionarMercMain({categorias,fabricas}:
                                 />
         </div>
         <form className="flex-col flex h-full"
-                action={addMercAction}        
+                action={mercFormAction}        
         >
             <div className="p-10 grid grid-cols-12 place-items-center gap-10 justify-center items-end">
                 <Textarea 
@@ -98,7 +106,7 @@ export default function AdicionarMercMain({categorias,fabricas}:
                                 onSelectionChange={setFabricaValue}
                                 >
                     {fabricas.map((fabrica) =>(
-                        <AutocompleteItem key={fabrica.fabrica_key} value={fabrica.label}>
+                        <AutocompleteItem key={fabrica.fabrica_key} value={fabrica.label} >
                             {fabrica.nomeFantasia}
                         </AutocompleteItem>
                     ))}
@@ -189,7 +197,7 @@ export default function AdicionarMercMain({categorias,fabricas}:
                 <Button color="danger" onPress={() => setConfirmationOpen(!isConfirmationOpen)}>
                     Cancelar
                 </Button>
-                <Button type="submit" color="success">
+                <Button type="submit" color="success" isDisabled={pending} aria-disabled={pending}>
                     Salvar
                 </Button>
             </div>

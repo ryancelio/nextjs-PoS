@@ -44,6 +44,8 @@ for(let i = 6;i < 2000; i++){
             estoque03: 0,
             estoque04: 0,
             estoqueTotal: 0,
+            dataEntrada: new Date().toString(),
+            valorCompra: Math.floor(Math.random() * 1000),
         }
     );
 }

@@ -1,13 +1,13 @@
 'use client';
 
 import { useCallback, useMemo, useState } from "react";
-import { Autocomplete, AutocompleteItem, Button, Input, Pagination, SortDescriptor, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Textarea } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Pagination, Selection, SortDescriptor, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Textarea } from "@nextui-org/react";
 // import { placeholderMerc } from "./placeholderMercadoria";
 import { placeholderFabrica, placeholderMercadoria } from "../lib/placeholders";
 import React from "react";
 import MercInfoSidebar from "./mercSidebar";
 import clsx from "clsx";
-import { ArchiveBoxIcon, FunnelIcon, MagnifyingGlassIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArchiveBoxIcon, ChevronDownIcon, FunnelIcon, MagnifyingGlassIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Mercadoria, Categoria, Fabrica } from "../lib/types";
 import Link from "next/link";
 import {useAsyncList} from "@react-stately/data";
@@ -35,6 +35,20 @@ const columns = [
         label: 'VALOR VENDA'
     }
 ]
+const statusOptions = [
+    {
+        id: "disponivel",
+        name: "Disponível",
+    },
+    {
+        id: "zerado",
+        name: "Zerado",
+    },
+    {
+        id: "naoVender",
+        name: "Não Vender",
+    },
+]
 
 export default function MercTable({mercadorias, categorias, fabricas}: 
     {
@@ -55,6 +69,7 @@ export default function MercTable({mercadorias, categorias, fabricas}:
     })
     const[isAdvancedFilterOpen,setAdvancedFilterOpen] = useState(false);
     const[fabricaFilter,setFabricaFilter] = useState("");
+    const[statusFilter,setStatusFilter] = useState<Selection>("all");
     const[page,setPage] = useState(1);
     const[rowsPerPage,setRowsPerPage] = useState(20);
 
@@ -70,7 +85,7 @@ export default function MercTable({mercadorias, categorias, fabricas}:
             return fabricas.find((fabrica) => fabrica.fabrica_key === key)
         }else{
             // throw new Error("Erro ao mostrar fabrica")
-            console.error("Erro ao mostrar Fabrica")
+            // console.error("Erro ao mostrar Fabrica")
             return placeholderFabrica;
         }
     }
@@ -161,8 +176,29 @@ export default function MercTable({mercadorias, categorias, fabricas}:
                 mercadoria.fabricaKey == Number(fabricaFilter)
             )
         }
+        //  Status Filter
+        if(statusFilter != "all" && Array.from(statusFilter).length !== statusOptions.length){
+            const filters = Array.from(statusFilter);
+
+            // Filtra as mercadorias filtradas anteriormente
+            filteredMercadorias = filteredMercadorias.filter((mercadoria) => {
+                // Se o filtro "naoVender" nao estiver selecionado,
+                // e naoVender da mercadoria for true
+                // Ignora os outros filtros e remove a mercadoria da array
+                if( !filters.includes("naoVender") && mercadoria.naoVender){
+                    return false;
+                }
+
+                const disponivel = (filters.includes("disponivel") && mercadoria.estoqueTotal > 0);
+                const zerado = (filters.includes("zerado") && mercadoria.estoqueTotal == 0);
+                const naoVender = (filters.includes("naoVender") && mercadoria.naoVender);
+
+                // Retorna a mercadoria no caso de qualquer um dos filtros forem verdadeiro
+                return disponivel || zerado || naoVender
+            });
+        }
         return filteredMercadorias;
-    },[mercadorias,filterValue,hasSearchFilter,fabricaFilter,hasFabricaFilter]);
+    },[mercadorias,filterValue,hasSearchFilter,fabricaFilter,hasFabricaFilter,statusFilter]);
 
     //  Sorting
     //  Recebe a lista filtrada de filteredMercadorias e permite ordenar (sort) elas de acordo com a coluna
@@ -243,7 +279,9 @@ export default function MercTable({mercadorias, categorias, fabricas}:
                         <Button as={Link} href="/test/adicionarMercadoria" color="success" ><PlusIcon className="w-5" /> Adicionar Merdacoria</Button>
                     </div>
                 </div>
+                
             {/* Advanced Filtering */}
+
                 <div className={clsx("flex overflow-hidden transition-height ease-out",
                     {
                         "h-0" : !isAdvancedFilterOpen
@@ -252,17 +290,41 @@ export default function MercTable({mercadorias, categorias, fabricas}:
                         "h-16 mt-4 border-b-1 border-gray-700" :isAdvancedFilterOpen
                     }
                 )}>
-                <Autocomplete label="Fabrica" className="w-52 h-fit" size="sm" labelPlacement="inside" onSelectionChange={onSelectionChange}>
-                            {fabricas.map((fabrica) =>(
-                                <AutocompleteItem key={fabrica.fabrica_key} value={fabrica.label}>
-                                    {fabrica.nomeFantasia}
-                                </AutocompleteItem>
-                            ))}
-                        </Autocomplete>
+                    <Autocomplete label="Fabrica" className="w-52 h-fit" size="sm" labelPlacement="inside" onSelectionChange={onSelectionChange}>
+                                {fabricas.map((fabrica) =>(
+                                    <AutocompleteItem key={fabrica.fabrica_key} value={fabrica.label}>
+                                        {fabrica.nomeFantasia}
+                                    </AutocompleteItem>
+                                ))}
+                    </Autocomplete>
+
+                    <div className="">
+                    <Dropdown>
+                                <DropdownTrigger >
+                                    <Button variant="flat" className="py-2 ml-3 h-12 text-md" endContent={<ChevronDownIcon className="text-medium w-4"/>} >
+                                        Status
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                variant="flat"
+                                disallowEmptySelection
+                                closeOnSelect={false}
+                                selectedKeys={statusFilter}
+                                selectionMode="multiple"
+                                onSelectionChange={setStatusFilter}
+                                >
+                                    {statusOptions.map((status) =>(
+                                        <DropdownItem key={status.id}>
+                                            {status.name}
+                                        </DropdownItem>
+                                    ))}
+                                </DropdownMenu>
+                    </Dropdown>
+                    </div>
                 </div>
             </div>
         )
-    },[filterValue,onSearchChange,setFilterValue,fabricas,isAdvancedFilterOpen]);
+    },[filterValue,onSearchChange,setFilterValue,fabricas,isAdvancedFilterOpen,setStatusFilter,statusFilter]);
 
     const BottomContent = useMemo(() =>{
         
