@@ -1,16 +1,15 @@
 'use client';
 
 import BackButton from "@/app/ui/components/BackButton";
-import { ArrowLeftIcon, HomeIcon } from "@heroicons/react/24/outline";
+import { HomeIcon } from "@heroicons/react/24/outline";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
-import { useContext } from "react";
 
 
 export default function TopBar(){
 
 
     return(
-        <section className="">
+        <section className="w-full h-fit">
             {/* Topbar */}
             <div className="flex-1 dark:bg-slate-800 border-b-1 w-full h-fit shadow-md p-1 items-center">
                 <div className="flex h-fit items-center">

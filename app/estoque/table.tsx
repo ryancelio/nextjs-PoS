@@ -82,7 +82,7 @@ export default function ProdcutsTable(){
         const end = start + rowsPerPage;
 
         return BigRows.slice(start,end);
-    },[page,BigRows])
+    },[page])
 
     return(
         <>

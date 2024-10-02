@@ -3,9 +3,9 @@ import {z} from "zod"
 export const MercadoriaSchema = z.object({
     mercadoria_key: z.string(),
     cod: z.number(),
-    descricao: z.string(),
-    cor: z.string().optional(),
-    fabrica: z.string().optional(),
+    descricao: z.string().min(1),
+    cor: z.string().min(1).optional(),
+    fabrica: z.string().min(1).optional(),
     estoqueTotal: z.number(),
     estoque02: z.number(),
     estoque03: z.number(),
@@ -49,6 +49,12 @@ export type Mercadoria = z.infer<typeof MercadoriaSchema>;
 export interface Categoria {
     categoria_key: string;
     label?: string;
+    name?: string;
+    grupo_key: string;
+}
+export interface Grupo {
+    grupo_key: string;
+    label: string;
     name?: string;
 }
 export interface Fabrica {

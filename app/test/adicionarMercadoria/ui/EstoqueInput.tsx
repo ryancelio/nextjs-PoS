@@ -1,4 +1,9 @@
 import clsx from "clsx";
+interface EstoqueValues {
+    estoque02: number,
+    estoque03: number,
+    estoque04: number,
+}
 
 
 export function EstoqueInput({label,id,value,setEstoqueValues,estoqueValues,getSumEstoque,isReadOnly}:
@@ -6,15 +11,26 @@ export function EstoqueInput({label,id,value,setEstoqueValues,estoqueValues,getS
         id: string,
         value?: number | any,
         setEstoqueValues: Function,
-        estoqueValues: any,
+        estoqueValues: EstoqueValues,
         getSumEstoque?: Function,
         isReadOnly?: boolean,
     }
 ){
+// function getEstoqueValues(id: string){
+//     switch(id){
+//         case "estoque02":
+//             return estoqueValues.estoque02;
+//         case "estoque03":
+//             return estoqueValues.estoque03;
+//         case "estoque04":
+//             return estoqueValues.estoque04;
+//         }
+
+// }
 
     return(
         <div className="items-center justify-center relative group">
-            <label htmlFor="" className={clsx(
+            <label htmlFor={id} className={clsx(
                 "absolute left-1/2 -translate-x-[150%] z-20 top-[5px] font-semibold text-lg group-hover:opacity-50 group-focus-within:opacity-50",
                 {
                     '-translate-x-[220%] opacity-50 group-hover:opacity-100' : isReadOnly != null && isReadOnly

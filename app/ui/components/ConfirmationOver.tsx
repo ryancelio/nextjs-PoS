@@ -24,11 +24,11 @@ export default function ConfirmationOver({title,desc,CancelText,CancelAction,Con
                     <p>{desc}</p>
                 </div>
                 <div className="mt-auto flex justify-evenly pt-8">
-                    <Button color="danger" variant="ghost" onPress={() => CancelAction()}>
-                        {CancelText? CancelText : "Cancel"}
-                    </Button>
                     <Button color="success" variant="solid" onPress={() => ConfirmAction()}>
                         {ConfirmText? ConfirmText : "Confirm"}
+                    </Button>
+                    <Button color="danger" variant="ghost" onPress={() => CancelAction()}>
+                        {CancelText? CancelText : "Cancel"}
                     </Button>
                 </div>
             </div>

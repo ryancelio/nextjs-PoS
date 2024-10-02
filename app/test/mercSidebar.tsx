@@ -4,7 +4,7 @@ import { Divider, Textarea } from "@nextui-org/react";
 import clsx from "clsx";
 import { db } from "../lib/db";
 
-export default function MercInfoSidebar({mercadoria,fabricaName}: {mercadoria: Mercadoria, fabricaName: String | undefined}){
+export default function MercInfoSidebar({mercadoria,fabrica,categoria,}: {mercadoria: Mercadoria, fabrica: Fabrica, categoria: Categoria}){
 // export default async function MercInfoSidebar({mercadoriaKey,}:{mercadoriaKey: string}){
 
         //@ts-ignore
@@ -21,11 +21,11 @@ export default function MercInfoSidebar({mercadoria,fabricaName}: {mercadoria: M
                 <h1 className="text-center text-2xl">{mercadoria.descricao}</h1>
                 <div className="text-lg flex justify-center items-center space-x-5">
                     <h1 className="">
-                        {fabricaName}
+                        {fabrica.nomeFantasia}
                     </h1>
                         <Divider orientation="vertical"className="px-2" />
                     <h1>
-                        {mercadoria.categoria}
+                        {categoria.name}
                     </h1>
                 </div>
                 <Divider className="mt-4"/>

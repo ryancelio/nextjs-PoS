@@ -1,23 +1,25 @@
 'use client';
-import { Button, getKeyValue, Link, Skeleton, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Button, getKeyValue, Input, Link, Skeleton, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import MercTable from "./table";
-import { placeholderMerc } from "./placeholderMercadoria";
-import Categoria from "../estoque/categoria";
+import { placeholderMercadoria } from "../lib/placeholders";
+import { Categoria } from "../lib/types";
 import { rows, columns } from "../estoque/placeholderData";
-import { ArchiveBoxIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { ArchiveBoxIcon, FunnelIcon, MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
-const placeholderCategorie: Categoria[] = [{
-    key: "1"
-}
-]
 
 export default function TableSkeleton(){
+
     return(
             <div className="w-full h-full grid grid-cols-12">
                     <Table aria-label="Table" color="primary" selectionMode="single" selectionBehavior="replace"
                              className="z-10 p-4 col-span-8"
+                             isHeaderSticky
                              topContent={<TableTopContent />}
+                             classNames={{
+                                base: "max-h-screen overflow-scroll",
+                                table: ""
+                            }}
                          >
                          <TableHeader className="" columns={columns}>
                              {(column) => <TableColumn key={column.key} className="light:bg-black light:text-white" align={column.key === "descricao" ? "start" : "center"} >{column.label}</TableColumn>}
@@ -45,11 +47,27 @@ export default function TableSkeleton(){
 
 
         return(
+            <div>
             <div className="flex items-center">
                 {/* Left */}
-                <div className="flex mr-auto">
+                <div className="mr-auto flex items-center gap-5">
+                    {/* <div className="flex">
                         <ArchiveBoxIcon className="w-6" />
                         <p className="pl-3 text-lg">Estoque</p>
+                    </div> */}
+                    <Skeleton className="rounded-xl h-10 w-fit">
+                    <div className="">
+                        <Input 
+                        isClearable
+                        className="w-full h-fit sm:max-w-[44%] md:max-w-full"
+                        placeholder="Pesquisar Mercadoria"
+                        startContent={<MagnifyingGlassIcon className="w-6"/>}
+                        />
+                    </div>
+                    <div>
+                        <FunnelIcon title="Filtros Avançados" className="w-6 cursor-pointer hover:opacity-50"/>
+                    </div>
+                    </Skeleton>
                 </div>
                 {/* Middle */}
                 <div className="mr-auto ml-auto text-2xl font-semibold">
@@ -57,10 +75,11 @@ export default function TableSkeleton(){
                 </div>
                 {/* Right */}
                 <div className="ml-auto">
-                    <Skeleton className="rounded-md">
-                        <Button as={Link} href="/test/adicionarMercadoria" color="success" ><PlusIcon className="w-5" /> Adicionar Merdacoria</Button>
+                    <Skeleton className="rounded-xl">
+                        <Button color="success" ><PlusIcon className="w-5" /> Adicionar Merdacoria</Button>
                     </Skeleton>
                 </div>
+            </div>
             </div>
         )
     }

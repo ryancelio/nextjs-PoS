@@ -10,9 +10,11 @@ export default function Page(){
 
 
     return(
-        <section className="dark:bg-zinc-900 h-screen w-full">
-            <TopBar />
-            <div className="">
+        <section className="flex-col dark:bg-zinc-900 h-screen w-full">
+            <div className="w-full h-[8%]">
+                <TopBar />
+            </div>
+            <div className="flex-grow h-[92%] pb-10">
                 <MercadoriaAddDiv/>
             </div>
         </section>

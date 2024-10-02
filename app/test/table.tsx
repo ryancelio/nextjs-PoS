@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { Autocomplete, AutocompleteItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Pagination, Selection, SortDescriptor, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Textarea } from "@nextui-org/react";
 // import { placeholderMerc } from "./placeholderMercadoria";
-import { placeholderFabrica, placeholderMercadoria } from "../lib/placeholders";
+import { placeholderCategoria, placeholderFabrica, placeholderMercadoria } from "../lib/placeholders";
 import React from "react";
 import MercInfoSidebar from "./mercSidebar";
 import clsx from "clsx";
@@ -80,14 +80,27 @@ export default function MercTable({mercadorias, categorias, fabricas}:
     const hasFabricaFilter = Boolean(fabricaFilter)
 
 
-    function getFabricaByKey(key: String | Number | Boolean | undefined) {
-        if(key){
-            return fabricas.find((fabrica) => fabrica.fabrica_key === key)
-        }else{
-            // throw new Error("Erro ao mostrar fabrica")
-            // console.error("Erro ao mostrar Fabrica")
-            return placeholderFabrica;
+    function getFabricaByKey(key: string | number | boolean | undefined): Fabrica {
+        let fabrica: Fabrica = placeholderFabrica;
+
+        if(key && key !== undefined){
+            const fabricaTemp = fabricas.find((fabrica) => fabrica.fabrica_key === key);
+            if(fabricaTemp !== undefined){
+                fabrica = fabricaTemp;
+            }
         }
+
+        return fabrica;
+    }
+    function getCategoriaByKey(key: String | number | boolean | undefined){
+        let categoria: Categoria = placeholderCategoria;
+        if(key && key !== undefined){
+            const categoriaTemp = categorias.find((categoria) => categoria.categoria_key === key);
+            if(categoriaTemp !== undefined){
+                categoria = categoriaTemp
+            }
+        }
+        return categoria;
     }
     const onRowsPerPageChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) =>{
         setRowsPerPage(Number(e.target.value));
@@ -235,9 +248,10 @@ export default function MercTable({mercadorias, categorias, fabricas}:
     
 
 
-    //|---------------------------------|
-    //|         Top Content             |
-    //|---------------------------------|
+
+    // |===============================|
+    // |        Top Content            |
+    // |===============================|
     const TopContent = useMemo(() =>{
         const onSelectionChange = (key: any) =>{
             const filteredFabrica = fabricas.find((fabrica) => fabrica.fabrica_key == key)
@@ -326,6 +340,10 @@ export default function MercTable({mercadorias, categorias, fabricas}:
         )
     },[filterValue,onSearchChange,setFilterValue,fabricas,isAdvancedFilterOpen,setStatusFilter,statusFilter]);
 
+    
+    // |===============================|
+    // |        Bottom Content         |
+    // |===============================|
     const BottomContent = useMemo(() =>{
         
         return(
@@ -433,7 +451,11 @@ export default function MercTable({mercadorias, categorias, fabricas}:
                          </TableBody>
                      </Table>
                 </div>
-                <MercInfoSidebar mercadoria={mercToDisplay} fabricaName={getFabricaByKey(mercToDisplay.fabricaKey)?.nomeFantasia}/>
+                <MercInfoSidebar 
+                mercadoria={mercToDisplay}
+                fabrica={getFabricaByKey(mercToDisplay.fabricaKey)}
+                categoria={getCategoriaByKey(mercToDisplay.categoriaKey)}
+                />
             </section>
             </>
     )
