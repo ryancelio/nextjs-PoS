@@ -18,7 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="text-foreground bg-background">
+    <html lang="pt-BR" className="text-foreground bg-background dark"
+    style={{colorScheme: "dark"}}>
       <body className={`${inter.className} antialiased min-h-fit`}>
         <Providers>
           <div className="flex transition-colors">

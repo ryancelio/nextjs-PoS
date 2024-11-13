@@ -12,6 +12,9 @@ export default async function MercadoriaAddDiv(){
         const categorias = await db('categorias').select("*");
         const grupos = await db('grupos').select("*");
 
+        // await new Promise((resolve) => setTimeout(resolve,3000))         // Simulate server wait time
+
+
         return(
                 <AdicionarMercMain categorias={categorias} fabricas={fabricas} grupos={grupos}/>
         )

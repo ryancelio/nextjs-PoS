@@ -1,11 +1,11 @@
 'use server';
 
-import { db } from "../lib/db";
+import { db } from "./db";
 import MercTable from "../test/table";
 import ErrorDisplayOver from "../ui/components/Error";
 import { useAsyncList } from "@react-stately/data";
-import {Categoria, Fabrica, Mercadoria} from "../lib/types"
-import { placeholderFabrica,placeholderCategoria,placeholderMercadoria } from "../lib/placeholders";
+import {Categoria, Fabrica, Mercadoria} from "./types"
+import { placeholderFabrica,placeholderCategoria,placeholderMercadoria } from "./placeholders";
 
 export default async function GetMercadorias(){
 

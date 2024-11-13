@@ -14,8 +14,8 @@ export default function MercInfoSidebar({mercadoria,fabrica,categoria,}: {mercad
     return(
         <div className="col-span-4 h-screen">
         <div className="flex-1 p-6 w-full h-full shadow-inner shadow-gray-400 dark:shadow-gray-900 
-                        bg-gradient-radial from-gray-200 to-gray-300
-                        dark:from-slate-700 dark:to-slate-800">
+                        bg-gray-200
+                        dark:bg-slate-800">
             {/* Top Container */}
             <div className="">
                 <h1 className="text-center text-2xl">{mercadoria.descricao}</h1>

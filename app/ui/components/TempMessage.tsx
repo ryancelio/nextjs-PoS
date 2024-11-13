@@ -1,78 +1,90 @@
 'use client';
-import { Progress } from "@nextui-org/react";
 import clsx from "clsx";
-import { SetStateAction, useEffect, useState } from "react";
-import { any } from "zod";
+import { useEffect } from "react";
 
-export function TempModal({isVisible,setVisible,value,setValue}:
+export function TempModal({ isVisible, setVisible, value, setValue, title, description, isPending }:
     {
         isVisible: boolean,
         value: number,
         setValue: (value: number) => void,
         setVisible: (value: boolean) => void,
-    }){
+        title: string,
+        description: string,
+        isPending: boolean,
+    }) {
+
 
     const resetValue = () => {
-        setValue(100);
+        setValue(3);
     }
+
+    // useEffect(() => {
+    //     const decreaseValue = setTimeout(() => {
+    //         console.log(value)
+
+    //         //@ts-ignore
+    //         setValue((prev) => {
+    //             if (prev <= 0) {
+    //                 setVisible(false)
+    //                 clearInterval(decreaseValue);
+    //                 return 0;
+    //             }
+    //             return (prev - 4);
+    //         })
+    //     }, 60);
+
+    //     return () => clearInterval(decreaseValue);
+    // }, [setValue, value, setVisible])
+
     useEffect(() => {
         const decreaseValue = setTimeout(() => {
             console.log(value)
-            //@ts-ignore
-            setValue((prev) => {
-                if(prev <= 0){
-                    setVisible(false)
-                    clearInterval(decreaseValue);
-                    return 0;
-                }
-                return (prev - 1);
-            })
-        }, 30);
+            if (!isPending && value >= 0) {
+                // setVisible(true)
+                //@ts-ignore
+                setValue((prev) => {
+                    if (prev <= 0) {
+                        // setVisible(false);
+                        clearTimeout(decreaseValue);
+                        return 0;
+                    }
+                    return (prev - 1);
 
-        return () => clearInterval(decreaseValue);
-    },[setValue,value,setVisible])
+                })
+            } else if (isPending) {
+                setValue(3);
+            }
+        }, 2000)
+        return () => clearTimeout(decreaseValue);
+    }, [value, isPending]);
 
-    // useEffect(() =>{
-    //     const beginTimeout = setInterval(()=>{
-    //         const decreaseValue = setInterval(() =>{
-    //             setValue((prev) => {
-    //                 if(prev <= 0){
-    //                     clearInterval(decreaseValue);
-    //                     return 0;
-    //                 }
-    //                 return Math.max(prev - 3, 0);
-    //             })         
-    //         }, 125)
-    //     }, 500)
-
-    //     return () => clearInterval(beginTimeout)
-    // },[])
-
-
-    return(
-        <div className={clsx("opacity-[var(--user-opacity)] bg-red-500 w-80 h-fit rounded-lg left-1/2 -translate-x-1/2 items-center text-center place-items-center transition-none",
+    return (
+        <div className={clsx(["transition-opacity ease-in"],
+            ["bg-red-500 w-80 h-20 rounded-lg shadow-lg text-white text-center grid grid-cols-1"],
+            [""],
             {
-                "hidden" : value == 0 && !isVisible,
+                "hidden": value == 0  || isPending,
             },
             {
-                "block" : value > 0 && isVisible
+                "opacity-0": value == 1,
+            },
+            {
+                "block opacity-100": value > 1
             }
-    )}
-        style={{
-            //@ts-ignore
-            '--user-opacity': (value / 100),
-        }}
-        onMouseEnter={resetValue}
+        )}
+            onMouseEnter={resetValue}
         >
             <div className="p-2">
-                <h1 className="text-md">
-                    Lorem ipsum dolor sit amet.
+                <h1 className="text-md font-bold mb-2">
+                    {title}
                 </h1>
                 <p className="text-sm">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae, eius.
+                    {description}
                 </p>
             </div>
-            {/* <Progress 
+            {/* 
+                TODO: Fix progressbar decrease, probrably by self implementing a progressbar with animation 
+                <Progress 
                 value={value}
                 size="sm"
                 className=""

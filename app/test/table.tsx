@@ -400,10 +400,10 @@ export default function MercTable({mercadorias, categorias, fabricas}:
                             sortDescriptor={sortDescriptor} onSortChange={setSortDescriptor} 
                             color="default" selectionMode="single"
                             selectionBehavior="replace"  
-                            onSelectionChange={(key) => handleSelectionChange(key)}
+                            onSelectionChange={(key: any) => handleSelectionChange(key)}
                             className="z-10 p-4"
                             topContent={TopContent}
-                            onRowAction={(key) => handleRowAction(key)}
+                            onRowAction={(key: any) => handleRowAction(key)}
                             classNames={{
                                 base: "max-h-screen overflow-scroll",
                                 table: ""

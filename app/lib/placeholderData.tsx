@@ -1,3 +1,5 @@
+import { Fabrica } from "./types"
+
 export const rows = [
     {
         key: '1',
@@ -169,5 +171,22 @@ export const categories = [
     {
         key:"1",
         label:"Eletro"
+    }
+]
+export const fabricas: Fabrica[] = [
+    {
+        fabrica_key: "0",
+        label: "IMOP",
+        nomeFantasia: "IMOP"
+    },
+    {
+        fabrica_key: "1",
+        label: "LA",
+        nomeFantasia: "L.A Estofados",
+    },
+    {
+        fabrica_key: "2",
+        label: "ITATIAIA",
+        nomeFantasia: "Itatiaia"
     }
 ]

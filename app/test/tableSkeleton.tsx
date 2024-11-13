@@ -3,7 +3,7 @@ import { Button, getKeyValue, Input, Link, Skeleton, Spinner, Table, TableBody, 
 import MercTable from "./table";
 import { placeholderMercadoria } from "../lib/placeholders";
 import { Categoria } from "../lib/types";
-import { rows, columns } from "../estoque/placeholderData";
+import { rows, columns } from "../lib/placeholderData";
 import { ArchiveBoxIcon, FunnelIcon, MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 

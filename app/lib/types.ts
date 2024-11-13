@@ -1,10 +1,10 @@
 import {z} from "zod"
 
 export const MercadoriaSchema = z.object({
-    mercadoria_key: z.string(),
+    mercadoria_key: z.string().optional(),
     cod: z.number(),
-    descricao: z.string().min(1),
-    cor: z.string().min(1).optional(),
+    descricao: z.string().min(1,"Descrição Pequena demais"),
+    cor: z.string().min(1,"Cor pequena demais").optional(),
     fabrica: z.string().min(1).optional(),
     estoqueTotal: z.number(),
     estoque02: z.number(),
@@ -20,6 +20,8 @@ export const MercadoriaSchema = z.object({
     naoVender: z.boolean().optional(),
     fabricaKey: z.number().optional(),
     categoriaKey: z.number().optional(),
+    grupoKey: z.number().optional(),
+    obs: z.string().optional(),
 })
 
 export type Mercadoria = z.infer<typeof MercadoriaSchema>;

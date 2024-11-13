@@ -1,33 +1,17 @@
 import clsx from "clsx";
-interface EstoqueValues {
-    estoque02: number,
-    estoque03: number,
-    estoque04: number,
-}
+import { Dispatch, SetStateAction } from "react";
 
 
-export function EstoqueInput({label,id,value,setEstoqueValues,estoqueValues,getSumEstoque,isReadOnly}:
+export function EstoqueInput({label,id,value,setEstoqueValues,onBlur,isReadOnly}:
     {label: string,
         id: string,
-        value?: number | any,
-        setEstoqueValues: Function,
-        estoqueValues: EstoqueValues,
-        getSumEstoque?: Function,
+        value?: number,
+        setEstoqueValues: Dispatch<SetStateAction<number>>,
+        // getSumEstoque?: Function,
+        onBlur?: Function,
         isReadOnly?: boolean,
     }
 ){
-// function getEstoqueValues(id: string){
-//     switch(id){
-//         case "estoque02":
-//             return estoqueValues.estoque02;
-//         case "estoque03":
-//             return estoqueValues.estoque03;
-//         case "estoque04":
-//             return estoqueValues.estoque04;
-//         }
-
-// }
-
     return(
         <div className="items-center justify-center relative group">
             <label htmlFor={id} className={clsx(
@@ -50,10 +34,14 @@ export function EstoqueInput({label,id,value,setEstoqueValues,estoqueValues,getS
                       name={id}
                       id={id}
                       value={value}
+                      onFocus={(e) => e.target.select()}
                       placeholder="0"
-                      onChange={(e) => setEstoqueValues(e)}
-                      onBlur={getSumEstoque? () => getSumEstoque(): () => {}}
-                      readOnly={isReadOnly}
+                      onChange={(e) => setEstoqueValues(Number(e.target.value))}
+                      onBlur={(e) => {
+                        if(onBlur !== undefined && onBlur !== null)
+                          return onBlur(Number(e.target.value));
+                      }}
+                      readOnly={isReadOnly ? true : false}
 
             />
         </div>

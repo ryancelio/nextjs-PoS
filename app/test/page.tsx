@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import GetMercadorias from "../estoque/getMercadorias";
+import GetMercadorias from "../lib/getMercadorias";
 import MercTable from "./table";
 import { Skeleton } from "@nextui-org/react";
 import TableSkeleton from "./tableSkeleton";
@@ -9,6 +9,8 @@ export default function TestPage(){
     
 
     return(
+        <Suspense fallback={<TableSkeleton />}>
             <GetMercadorias />
+        </Suspense>
     )
 }
