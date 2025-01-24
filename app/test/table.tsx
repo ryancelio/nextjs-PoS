@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useState } from "react";
-import { Autocomplete, AutocompleteItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Pagination, Selection, SortDescriptor, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Textarea } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Pagination, Selection, SortDescriptor, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Textarea } from "@heroui/react";
 // import { placeholderMerc } from "./placeholderMercadoria";
 import { placeholderCategoria, placeholderFabrica, placeholderMercadoria } from "../lib/placeholders";
 import React from "react";

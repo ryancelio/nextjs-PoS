@@ -1,7 +1,7 @@
 'use client';
 
 import { ArchiveBoxIcon, ChartBarIcon, ShoppingBagIcon, UserGroupIcon, UsersIcon } from "@heroicons/react/24/outline";
-import { Button, Link } from "@nextui-org/react";
+import { Button, Link } from "@heroui/react";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";

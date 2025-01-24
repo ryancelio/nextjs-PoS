@@ -2,7 +2,7 @@
 
 import BackButton from "@/app/ui/components/BackButton";
 import { HomeIcon } from "@heroicons/react/24/outline";
-import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs } from "@heroui/react";
 
 
 export default function TopBar(){

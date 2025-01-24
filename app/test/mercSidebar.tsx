@@ -1,6 +1,6 @@
 
 import { Mercadoria,Categoria,Fabrica } from "../lib/types";
-import { Divider, Textarea } from "@nextui-org/react";
+import { Divider, Textarea } from "@heroui/react";
 import clsx from "clsx";
 import { db } from "../lib/db";
 

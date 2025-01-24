@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import GetMercadorias from "../lib/getMercadorias";
 import MercTable from "./table";
-import { Skeleton } from "@nextui-org/react";
+import { Skeleton } from "@heroui/react";
 import TableSkeleton from "./tableSkeleton";
 
 

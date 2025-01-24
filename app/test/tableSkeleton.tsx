@@ -1,5 +1,5 @@
 'use client';
-import { Button, getKeyValue, Input, Link, Skeleton, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Button, getKeyValue, Input, Link, Skeleton, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react";
 import MercTable from "./table";
 import { placeholderMercadoria } from "../lib/placeholders";
 import { Categoria } from "../lib/types";

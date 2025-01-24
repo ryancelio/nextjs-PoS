@@ -1,5 +1,5 @@
 'use client';
-import { Autocomplete, AutocompleteItem, Button, DatePicker, Divider, Input, Textarea } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Button, DatePicker, Divider, Input, Textarea } from "@heroui/react";
 import ConfirmationOver from "@/app/ui/components/ConfirmationOver";
 import { Key, useActionState, useState } from "react";
 import { getLocalTimeZone, today, DateValue } from '@internationalized/date'
@@ -66,7 +66,8 @@ export default function AdicionarMercMain({ categorias, fabricas, grupos }:
 
 
     function getSomaEstoques(value: number) {
-        setEstoqueTotal((prev) => (prev + value))
+        // setEstoqueTotal((prev) => (prev + value)) // Error: Doesn't remove the previous value
+        setEstoqueTotal(estoque02 + estoque03 + estoque04);
     }
 
     const submitAction = (formData: FormData) => {

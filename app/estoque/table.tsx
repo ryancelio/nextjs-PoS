@@ -2,11 +2,11 @@
 'use client';
 
 import React, { useMemo, useState } from "react";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@nextui-org/table";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue} from "@heroui/table";
 import {rows, categories} from "./placeholderData";
 import clsx from "clsx";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Autocomplete, AutocompleteItem, Divider, Pagination, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Divider, Pagination, Select, SelectItem, Textarea } from "@heroui/react";
 import { Mercadoria } from "../lib/types";
 import { placeholderMercadoria } from "../lib/placeholders";
 
@@ -126,10 +126,10 @@ export default function ProdcutsTable(){
     );
 
     function ProductInfo(){
-        return(
+        return (
             //    {/* Item Description Over */}
             // Background Blur
-            <div className={clsx("transition-all ease-out fixed bg-black w-screen h-screen z-20 top-0 left-0 right-0 bottom-0 bg-opacity-40 backdrop-blur-sm grid place-items-center",
+            (<div className={clsx("transition-all ease-out fixed bg-black w-screen h-screen z-20 top-0 left-0 right-0 bottom-0 bg-opacity-40 backdrop-blur-sm grid place-items-center",
                         {
                             'block' : isOpen,
                             'hidden backdrop:hidden' : !isOpen,
@@ -194,7 +194,7 @@ export default function ProdcutsTable(){
                             </div>
                         </div>
                     </div>
-                </div>
+            </div>)
         );
     }
     

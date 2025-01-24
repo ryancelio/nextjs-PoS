@@ -1,4 +1,4 @@
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import TopBar from "./TopBar";
 
 export default function AddMercSkeleton() {

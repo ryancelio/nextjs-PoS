@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { Suspense, useContext, useEffect, useState } from "react";
 import { SidebarContext } from "./verticalNavbar/sidebarOpenContext";
 import clsx from "clsx";
-import { Skeleton, Switch } from "@nextui-org/react";
+import { Skeleton, Switch } from "@heroui/react";
 
 export function ThemeSwitcher(){
     const[mounted,setMounted] = useState(false);

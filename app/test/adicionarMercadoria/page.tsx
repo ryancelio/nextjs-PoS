@@ -1,4 +1,4 @@
-import { Autocomplete, AutocompleteItem, Textarea } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Textarea } from "@heroui/react";
 import TopBar from "./TopBar";
 import { db } from "@/app/lib/db";
 import { Suspense, useEffect, useState } from "react";
